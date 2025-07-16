@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>4th MONTHSARY</title>
+  <style>
+    :root {
+      --primary: #fff;
+      --bg-color: pink;
+      --bg-envelope-color: #f5edd1;
+      --envelope-tab: #ecdeb8;
+      --envelope-cover: #e6cfa7;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+      --txt-color: #2c1810;
+      --heart-color: rgb(252, 8, 231);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 25%, #fecfef 50%, #ff9a9e 75%, #fad0c4 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    .envelope-wrapper {
+      background: var(--bg-envelope-color);
+      width: 600px;
+      height: 450px;
+      box-shadow: 0 0 40px var(--shadow-color);
+      position: relative;
+      z-index: 2;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .envelope-wrapper:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px var(--shadow-color);
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      z-index: 3;
+      border-top: 220px solid var(--envelope-tab);
+      border-right: 300px solid transparent;
+      border-left: 300px solid transparent;
+      transform-origin: top;
+      transition: all 0.8s ease-in-out;
+    }
+
+    .envelope::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      width: 0;
+      height: 0;
+      border-top: 220px solid transparent;
+      border-right: 300px solid var(--envelope-cover);
+      border-bottom: 230px solid var(--envelope-cover);
+      border-left: 300px solid var(--envelope-cover);
+    }
+
+    .letter {
+      position: absolute;
+      left: 6%;
+      bottom: 8%;
+      width: 80%;
+      height: 80%;
+      background: linear-gradient(135deg, #fefdfb 0%, #f7f3e8 100%);
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 108, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 50%, rgba(120, 119, 108, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 40% 80%, rgba(120, 119, 108, 0.1) 1px, transparent 1px);
+      text-align: center;
+      transition: all 1.2s ease-in-out;
+      box-shadow: 0 0 20px rgba(139, 116, 76, 0.4), inset 0 0 20px rgba(139, 116, 76, 0.1);
+      padding: 25px;
+      border-radius: 8px;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(100%) scale(0.8);
+      z-index: 1;
+      border: 2px solid rgba(139, 116, 76, 0.3);
+    }
+
+    .letter::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 24px,
+          rgba(139, 116, 76, 0.1) 25px,
+          rgba(139, 116, 76, 0.1) 26px
+        );
+      pointer-events: none;
+      border-radius: 6px;
+    }
+
+    .letter .text {
+      color: var(--txt-color);
+      text-align: center;
+      font-size: 16px;
+      line-height: 1.6;
+      font-family: 'Georgia', serif;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slideshow {
+      width: 100%;
+      height: 450px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.4);
+      background: #f0f0f0;
+    }
+
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 13px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+      transform: translateX(100%);
+    }
+
+    .slideshow img.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .slideshow img.prev {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+
+    .slideshow img.next {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+
+    .slideshow img.fade-in {
+      animation: fadeInSlide 1.2s ease-in-out forwards;
+    }
+
+    .slideshow img.fade-out {
+      animation: fadeOutSlide 1.2s ease-in-out forwards;
+    }
+
+    @keyframes fadeInSlide {
+      0% { 
+        opacity: 0; 
+        transform: translateX(100%) scale(0.8); 
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateX(0) scale(1); 
+      }
+    }
+
+    @keyframes fadeOutSlide {
+      0% { 
+        opacity: 1; 
+        transform: translateX(0) scale(1); 
+      }
+      100% { 
+        opacity: 0; 
+        transform: translateX(-100%) scale(0.8); 
+      }
+    }
+
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--heart-color);
+      animation: typing 3s steps(30, end), blink 0.8s step-end infinite;
+      font-weight: bold;
+      color: var(--heart-color);
+      margin-bottom: 15px;
+      font-family: 'Georgia', serif;
+      font-size: 26px;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      from, to { border-color: transparent }
+      50% { border-color: var(--heart-color) }
+    }
+
+    .heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 30px;
+      height: 30px;
+      background: var(--heart-color);
+      z-index: 10;
+      transform: translate(-50%, -20%) rotate(45deg);
+      transition: all 0.5s ease-in-out;
+      box-shadow: 0 0 15px var(--heart-color), 0 0 30px var(--heart-color);
+      cursor: pointer;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .heart:before,
+    .heart:after {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: var(--heart-color);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--heart-color);
+    }
+
+    .heart:before {
+      top: -15px;
+      left: 0;
+    }
+
+    .heart:after {
+      top: 0;
+      left: -15px;
+    }
+
+    .flap .envelope::before {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .flap .letter {
+      bottom: 8%;
+      transform: scale(1) translateY(0);
+      transition-delay: 0.8s;
+      opacity: 1;
+      z-index: 5;
+    }
+
+    .flap .heart {
+      transform: translate(-50%, -20%) rotate(90deg) scale(0.8);
+      transition-delay: 0.4s;
+      opacity: 0.3;
+      z-index: 1;
+    }
+
+    .floating-heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff6b9d;
+      transform: rotate(45deg);
+      animation: gentleFloat 8s infinite ease-in-out;
+      opacity: 0.6;
+      box-shadow: 0 0 10px #ff6b9d;
+    }
+
+    .floating-heart::before,
+    .floating-heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff6b9d;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #ff6b9d;
+    }
+
+    .floating-heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .floating-heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    .floating-flower {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      animation: gentleFloatFlower 10s infinite ease-in-out;
+      opacity: 0.7;
+    }
+
+    .floating-flower::before {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #ff69b4;
+      border-radius: 50%;
+      box-shadow: 
+        0 0 0 3px #ffb6c1,
+        10px 0 0 2px #ff1493,
+        5px 8px 0 2px #ff1493,
+        -5px 8px 0 2px #ff1493,
+        -10px 0 0 2px #ff1493,
+        -5px -8px 0 2px #ff1493,
+        5px -8px 0 2px #ff1493;
+      animation: gentleRotate 12s infinite linear;
+    }
+
+    .floating-flower::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 10px;
+      width: 3px;
+      height: 15px;
+      background: #228b22;
+      border-radius: 2px;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { 
+        transform: translateY(0) rotate(45deg) scale(1); 
+      }
+      50% { 
+        transform: translateY(-20px) rotate(45deg) scale(1.1); 
+      }
+    }
+
+    @keyframes gentleFloatFlower {
+      0%, 100% { 
+        transform: translateY(0) translateX(0) rotate(0deg) scale(1); 
+      }
+      25% { 
+        transform: translateY(-15px) translateX(10px) rotate(90deg) scale(1.05); 
+      }
+      50% { 
+        transform: translateY(-10px) translateX(-5px) rotate(180deg) scale(1.1); 
+      }
+      75% { 
+        transform: translateY(-20px) translateX(8px) rotate(270deg) scale(1.05); 
+      }
+    }
+
+    @keyframes gentleRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { 
+        transform: translate(-50%, -20%) rotate(45deg) scale(1); 
+        box-shadow: 0 0 15px var(--heart-color), 0 0 30px var(--heart-color);
+      }
+      50% { 
+        transform: translate(-50%, -20%) rotate(45deg) scale(1.3); 
+        box-shadow: 0 0 25px var(--heart-color), 0 0 50px var(--heart-color), 0 0 100px rgba(252, 8, 231, 0.3);
+      }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { 
+        transform: translate(-50%, -20%) rotate(45deg) scale(1); 
+      }
+      10% { 
+        transform: translate(-50%, -20%) rotate(45deg) scale(1.1); 
+      }
+      20% { 
+        transform: translate(-50%, -20%) rotate(45deg) scale(1); 
+      }
+      30% { 
+        transform: translate(-50%, -20%) rotate(45deg) scale(1.1); 
+      }
+      40% { 
+        transform: translate(-50%, -20%) rotate(45deg) scale(1); 
+      }
+    }
+
+    .heart:hover {
+      animation: heartbeat 0.6s ease-in-out;
+    }
+
+    .message {
+      font-size: 16px;
+      color: var(--txt-color);
+      margin-top: 15px;
+      font-weight: 500;
+      font-family: 'Georgia', serif;
+      text-align: left;
+      line-height: 1.8;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid var(--heart-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .signature {
+      font-size: 16px;
+      color: var(--txt-color);
+      margin-top: 15px;
+      font-weight: bold;
+      font-family: 'Georgia', serif;
+      text-align: right;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 10px;
+      border-radius: 8px;
+      border-right: 4px solid var(--heart-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .instruction {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      animation: bounce 2s infinite;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      z-index: 15;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { 
+        transform: translateX(-50%) translateY(0) scale(1); 
+      }
+      40% { 
+        transform: translateX(-50%) translateY(-15px) scale(1.1); 
+      }
+      60% { 
+        transform: translateX(-50%) translateY(-8px) scale(1.05); 
+      }
+    }
+
+    .flap .instruction {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    @media (max-width: 650px) {
+      .envelope-wrapper { 
+        width: 90vw;
+        height: 70vh;
+        transform: scale(0.9); 
+      }
+      .slideshow {
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .envelope-wrapper { 
+        transform: scale(0.8); 
+      }
+      .slideshow {
+        height: 180px;
+      }
+    }
+
+    audio {
+      display: none;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Hearts Background - Much More -->
+  <div class="floating-heart" style="left:2%; top:5%; animation-delay: 0s;"></div>
+  <div class="floating-heart" style="left:8%; top:15%; width:25px; height:25px; animation-delay: 2s;"></div>
+  <div class="floating-heart" style="left:12%; top:25%; width:15px; height:15px; animation-delay: 4s;"></div>
+  <div class="floating-heart" style="left:18%; top:35%; width:30px; height:30px; animation-delay: 1s;"></div>
+  <div class="floating-heart" style="left:25%; top:45%; width:18px; height:18px; animation-delay: 6s;"></div>
+  <div class="floating-heart" style="left:32%; top:55%; width:25px; height:25px; animation-delay: 3s;"></div>
+  <div class="floating-heart" style="left:38%; top:65%; width:35px; height:35px; animation-delay: 5s;"></div>
+  <div class="floating-heart" style="left:45%; top:75%; width:20px; height:20px; animation-delay: 1.5s;"></div>
+  <div class="floating-heart" style="left:52%; top:85%; width:28px; height:28px; animation-delay: 4.5s;"></div>
+  <div class="floating-heart" style="left:58%; top:10%; width:22px; height:22px; animation-delay: 2.5s;"></div>
+  <div class="floating-heart" style="left:65%; top:20%; width:26px; height:26px; animation-delay: 7s;"></div>
+  <div class="floating-heart" style="left:72%; top:30%; width:19px; height:19px; animation-delay: 3.5s;"></div>
+  <div class="floating-heart" style="left:78%; top:40%; width:24px; height:24px; animation-delay: 6.5s;"></div>
+  <div class="floating-heart" style="left:85%; top:50%; width:21px; height:21px; animation-delay: 8s;"></div>
+  <div class="floating-heart" style="left:92%; top:60%; width:27px; height:27px; animation-delay: 0.5s;"></div>
+  <div class="floating-heart" style="left:95%; top:70%; width:23px; height:23px; animation-delay: 9s;"></div>
+  <div class="floating-heart" style="left:88%; top:80%; width:29px; height:29px; animation-delay: 1.8s;"></div>
+  <div class="floating-heart" style="left:82%; top:90%; width:17px; height:17px; animation-delay: 5.5s;"></div>
+  <div class="floating-heart" style="left:75%; top:8%; width:32px; height:32px; animation-delay: 4.2s;"></div>
+  <div class="floating-heart" style="left:68%; top:18%; width:16px; height:16px; animation-delay: 7.5s;"></div>
+  <div class="floating-heart" style="left:60%; top:28%; width:31px; height:31px; animation-delay: 2.8s;"></div>
+  <div class="floating-heart" style="left:55%; top:38%; width:14px; height:14px; animation-delay: 8.5s;"></div>
+  <div class="floating-heart" style="left:48%; top:48%; width:33px; height:33px; animation-delay: 3.2s;"></div>
+  <div class="floating-heart" style="left:42%; top:58%; width:12px; height:12px; animation-delay: 6.8s;"></div>
+  <div class="floating-heart" style="left:35%; top:68%; width:28px; height:28px; animation-delay: 9.5s;"></div>
+  <div class="floating-heart" style="left:28%; top:78%; width:18px; height:18px; animation-delay: 1.2s;"></div>
+  <div class="floating-heart" style="left:22%; top:88%; width:26px; height:26px; animation-delay: 4.8s;"></div>
+  <div class="floating-heart" style="left:15%; top:12%; width:20px; height:20px; animation-delay: 7.2s;"></div>
+  <div class="floating-heart" style="left:10%; top:22%; width:24px; height:24px; animation-delay: 2.2s;"></div>
+  <div class="floating-heart" style="left:5%; top:32%; width:30px; height:30px; animation-delay: 5.2s;"></div>
+  
+  <!-- Floating Flowers Background - Much More -->
+  <div class="floating-flower" style="left:4%; top:8%; animation-delay: 0s;"></div>
+  <div class="floating-flower" style="left:10%; top:18%; width:22px; height:22px; animation-delay: 3s;"></div>
+  <div class="floating-flower" style="left:16%; top:28%; width:28px; height:28px; animation-delay: 6s;"></div>
+  <div class="floating-flower" style="left:22%; top:38%; width:20px; height:20px; animation-delay: 2s;"></div>
+  <div class="floating-flower" style="left:28%; top:48%; width:26px; height:26px; animation-delay: 8s;"></div>
+  <div class="floating-flower" style="left:34%; top:58%; width:24px; height:24px; animation-delay: 4s;"></div>
+  <div class="floating-flower" style="left:40%; top:68%; width:30px; height:30px; animation-delay: 7s;"></div>
+  <div class="floating-flower" style="left:46%; top:78%; width:18px; height:18px; animation-delay: 1s;"></div>
+  <div class="floating-flower" style="left:52%; top:88%; width:25px; height:25px; animation-delay: 5s;"></div>
+  <div class="floating-flower" style="left:58%; top:6%; width:20px; height:20px; animation-delay: 9s;"></div>
+  <div class="floating-flower" style="left:64%; top:16%; width:27px; height:27px; animation-delay: 1.5s;"></div>
+  <div class="floating-flower" style="left:70%; top:26%; width:23px; height:23px; animation-delay: 4.5s;"></div>
+  <div class="floating-flower" style="left:76%; top:36%; width:29px; height:29px; animation-delay: 7.5s;"></div>
+  <div class="floating-flower" style="left:82%; top:46%; width:21px; height:21px; animation-delay: 2.5s;"></div>
+  <div class="floating-flower" style="left:88%; top:56%; width:26px; height:26px; animation-delay: 8.5s;"></div>
+  <div class="floating-flower" style="left:94%; top:66%; width:19px; height:19px; animation-delay: 3.5s;"></div>
+  <div class="floating-flower" style="left:90%; top:76%; width:24px; height:24px; animation-delay: 6.5s;"></div>
+  <div class="floating-flower" style="left:86%; top:86%; width:31px; height:31px; animation-delay: 9.5s;"></div>
+  <div class="floating-flower" style="left:80%; top:14%; width:17px; height:17px; animation-delay: 0.5s;"></div>
+  <div class="floating-flower" style="left:74%; top:24%; width:28px; height:28px; animation-delay: 3.8s;"></div>
+  <div class="floating-flower" style="left:68%; top:34%; width:22px; height:22px; animation-delay: 6.8s;"></div>
+  <div class="floating-flower" style="left:62%; top:44%; width:25px; height:25px; animation-delay: 1.8s;"></div>
+  <div class="floating-flower" style="left:56%; top:54%; width:32px; height:32px; animation-delay: 4.8s;"></div>
+  <div class="floating-flower" style="left:50%; top:64%; width:16px; height:16px; animation-delay: 7.8s;"></div>
+  <div class="floating-flower" style="left:44%; top:74%; width:30px; height:30px; animation-delay: 2.8s;"></div>
+  <div class="floating-flower" style="left:38%; top:84%; width:18px; height:18px; animation-delay: 5.8s;"></div>
+  <div class="floating-flower" style="left:32%; top:4%; width:26px; height:26px; animation-delay: 8.8s;"></div>
+  <div class="floating-flower" style="left:26%; top:14%; width:21px; height:21px; animation-delay: 1.3s;"></div>
+  <div class="floating-flower" style="left:20%; top:24%; width:29px; height:29px; animation-delay: 4.3s;"></div>
+  <div class="floating-flower" style="left:14%; top:34%; width:23px; height:23px; animation-delay: 7.3s;"></div>
+  <div class="floating-flower" style="left:8%; top:44%; width:27px; height:27px; animation-delay: 2.3s;"></div>
+  <div class="floating-flower" style="left:2%; top:54%; width:19px; height:19px; animation-delay: 5.3s;"></div>
+  <div class="floating-flower" style="left:6%; top:64%; width:24px; height:24px; animation-delay: 8.3s;"></div>
+  <div class="floating-flower" style="left:12%; top:74%; width:33px; height:33px; animation-delay: 3.3s;"></div>
+  <div class="floating-flower" style="left:18%; top:84%; width:15px; height:15px; animation-delay: 6.3s;"></div>
+  <div class="floating-flower" style="left:24%; top:94%; width:28px; height:28px; animation-delay: 9.3s;"></div>
+  
+
+  <div class="container">
+    <div class="envelope-wrapper" id="wrapper" onclick="toggleFlap()">
+      <div class="envelope">
+        <div class="letter">
+          <div class="text">
+            <div class="typewriter">Happy 4th Monthsary! 💖</div>
+            <div class="slideshow">
+              <img src="wdswsdw.jpg.jpg" alt="Our Memory 1" class="active">
+              <img src="ngek.jpg" alt="Our Memory 2">
+              <img src="dasdasds.jpg.jpg" alt="Our Memory 3">
+            </div>
+            <div class="message">
+              Hi, love. Happy 4th Monthsary! Thank you palagi sa pag-iintindi at sa lahat-lahat ng binibigay mo sa'kin— sa walang sawang pagmamahal at pag-aalaga. Sorry kasi lagi kitang binubusit BWAHHAHAHA! Mahal na mahal kita. Ito muna gift ko sa'yo, wala pang pera eh bawi ako pag pumaldo na 'ko BWHAHAHA! I LOVE YOU SO MUCH, HAPPY 4th MONTHSARY.
+            </div>
+            <div class="signature">From: James Pogi</div>
+          </div>
+        </div>
+      </div>
+      <div class="heart"></div>
+    </div>
+  </div>
+
+  <div class="instruction" id="instruction">💖 Click the heart to open! 💖</div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="Ikaw At Ako (Instrumental).mp3" type="audio/wav">
+    <source src="Ikaw At Ako (Instrumental).mp3" type="audio/mp3">
+  </audio>
+
+  <script>
+    let isOpen = false;
+    let musicPlaying = false;
+    const audio = document.getElementById('bgMusic');
+
+    function toggleFlap() {
+      const wrapper = document.getElementById("wrapper");
+      wrapper.classList.toggle("flap");
+      isOpen = !isOpen;
+      
+      // Auto-play music when envelope is opened
+      if (isOpen && !musicPlaying) {
+        playMusic();
+        startSlideshow();
+      }
+    }
+
+    function playMusic() {
+      audio.play().then(() => {
+        musicPlaying = true;
+        console.log("Music started playing");
+      }).catch((error) => {
+        console.log("Audio autoplay prevented:", error);
+      });
+    }
+
+    // Enhanced Slideshow with proper sliding effects
+    const images = document.querySelectorAll('.slideshow img');
+    let currentIndex = 0;
+    let slideshowInterval;
+    
+     
+    function showNextImage() {
+      // Add fade-out animation to current image
+      images[currentIndex].classList.add('fade-out');
+      images[currentIndex].classList.remove('active');
+      
+      // Move to next image
+      currentIndex = (currentIndex + 1) % images.length;
+      
+      // Wait for fade-out to complete, then show next image
+      setTimeout(() => {
+        // Reset all images
+        images.forEach((img, index) => {
+          img.classList.remove('active', 'fade-in', 'fade-out', 'prev', 'next');
+          if (index !== currentIndex) {
+            img.style.transform = 'translateX(100%)';
+            img.style.opacity = '0';
+          }
+        });
+        
+        // Show new active image with fade-in animation
+        images[currentIndex].classList.add('active', 'fade-in');
+      }, 200);
+    }
+    
+    function startSlideshow() {
+      if (slideshowInterval) clearInterval(slideshowInterval);
+      slideshowInterval = setInterval(showNextImage, 4000);
+    }
+    
+    // Create floating hearts and flowers for slideshow
+    function createSlideshowElements() {
+      const slideshow = document.querySelector('.slideshow');
+      
+      // Create additional hearts
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'slideshow-heart';
+        heart.style.top = Math.random() * 80 + '%';
+        heart.style.animationDelay = '0s';
+        heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+        slideshow.appendChild(heart);
+        
+        // Remove heart after animation
+        setTimeout(() => {
+          if (heart.parentNode) {
+            heart.parentNode.removeChild(heart);
+          }
+        }, 10000);
+      }, 2000);
+      
+      // Create additional flowers
+      setInterval(() => {
+        const flower = document.createElement('div');
+        flower.className = 'slideshow-flower';
+        flower.style.top = Math.random() * 80 + '%';
+        flower.style.animationDelay = '0s';
+        flower.style.animationDuration = (8 + Math.random() * 4) + 's';
+        slideshow.appendChild(flower);
+        
+        // Remove flower after animation
+        setTimeout(() => {
+          if (flower.parentNode) {
+            flower.parentNode.removeChild(flower);
+          }
+        }, 12000);
+      }, 3000);
+    }
+    
+    // Enhanced interaction
+    document.getElementById("wrapper").addEventListener('click', function() {
+      if (isOpen) {
+        startSlideshow();
+      } else {
+        if (slideshowInterval) clearInterval(slideshowInterval);
+      }
+    });
+
+    // Try to auto-play music on first user interaction
+    document.addEventListener('click', function() {
+      if (isOpen && !musicPlaying) {
+        playMusic();
+      }
+    }, { once: true });
+
+    // Auto-play music when page loads (if browser allows)
+    window.addEventListener('load', function() {
+      // Try to play music immediately when page loads
+      setTimeout(() => {
+        playMusic();
+      }, 1000);
+    });
+
+    // Add some sparkle effects
+    function createSparkle() {
+      const sparkle = document.createElement('div');
+      sparkle.style.position = 'absolute';
+      sparkle.style.width = '4px';
+      sparkle.style.height = '4px';
+      sparkle.style.background = '#fff';
+      sparkle.style.borderRadius = '50%';
+      sparkle.style.left = Math.random() * 100 + '%';
+      sparkle.style.top = Math.random() * 100 + '%';
+      sparkle.style.animation = 'sparkle 2s ease-in-out infinite';
+      sparkle.style.zIndex = '10';
+      
+      document.body.appendChild(sparkle);
+      
+      setTimeout(() => {
+        sparkle.remove();
+      }, 2000);
+    }
+    
+    // Create sparkles periodically
+    setInterval(createSparkle, 500);
+  </script>
+
+</body>
+</html>
